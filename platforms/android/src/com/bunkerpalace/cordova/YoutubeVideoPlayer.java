@@ -42,8 +42,19 @@ public class YoutubeVideoPlayer extends CordovaPlugin {
 	}
 
 	private void openVideo(String videoId) {
-		Intent intent = createYoutubeIntent(videoId);
-		cordova.startActivityForResult(this, intent, 242);
+		// Intent intent = createYoutubeIntent(videoId);
+		// cordova.startActivityForResult(this, intent, 242);
+		Context context=this.cordova.getActivity().getApplicationContext();
+		Context cordovaContext2 = cordova.getActivity();
+		//or Context context=cordova.getActivity().getApplicationContext();
+		Intent intent=new Intent(context,YouTubeActivity.class);
+		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.putExtra("videoId", videoId);
+		ConfigXmlParser parser = new ConfigXmlParser();
+		parser.parse(cordovaContext2);
+		CordovaPreferences prefs = parser.getPreferences();
+		intent.putExtra("YouTubeApiId", prefs.getString("YouTubeDataApiKey","YOUTUBE_API_KEY"));
+		context.startActivity(intent);
 	}
 
 	private Intent createYoutubeIntent(String videoId) {
@@ -54,16 +65,17 @@ public class YoutubeVideoPlayer extends CordovaPlugin {
 			if(version != null && version.startsWith("11.16") && YouTubeIntents.canResolvePlayVideoIntent(cordovaContext)) {
 				intent = YouTubeIntents.createPlayVideoIntent(cordovaContext, videoId);
 			} else {
-				if(YouTubeIntents.canResolvePlayVideoIntentWithOptions(cordovaContext)){
-					intent = YouTubeIntents.createPlayVideoIntentWithOptions(cordovaContext, videoId, true, true);
-				} else {
-					intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + videoId), cordovaContext, YouTubeActivity.class);
-					intent.putExtra("videoId", videoId);
-	                ConfigXmlParser parser = new ConfigXmlParser();
-	                parser.parse(cordovaContext);
-	                CordovaPreferences prefs = parser.getPreferences();
-	                intent.putExtra("YouTubeApiId", prefs.getString("YouTubeDataApiKey","YOUTUBE_API_KEY"));
-				}
+				intent = YouTubeIntents.createPlayVideoIntentWithOptions(cordovaContext, videoId, true, true);
+				// if(YouTubeIntents.canResolvePlayVideoIntentWithOptions(cordovaContext)){
+				// 	intent = YouTubeIntents.createPlayVideoIntentWithOptions(cordovaContext, videoId, true, true);
+				// } else {
+				// 	intent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.youtube.com/watch?v=" + videoId), cordovaContext, YouTubeActivity.class);
+				// 	intent.putExtra("videoId", videoId);
+	            //     ConfigXmlParser parser = new ConfigXmlParser();
+	            //     parser.parse(cordovaContext);
+	            //     CordovaPreferences prefs = parser.getPreferences();
+	            //     intent.putExtra("YouTubeApiId", prefs.getString("YouTubeDataApiKey","YOUTUBE_API_KEY"));
+				// }
 			}
 			return intent;
 		}
