@@ -43,6 +43,11 @@
 
             <source-file src="platforms/android/src/com/bunkerpalace/cordova/YouTubeActivity.java" target-dir="src/com/bunkerpalace/cordova"/>
             <source-file src="platforms/android/src/com/bunkerpalace/cordova/YoutubeVideoPlayer.java" target-dir="src/com/bunkerpalace/cordova"/>
+            
+            <resource-file src="res/drawable-hdpi/ic_pause.png" target="res/drawable-hdpi/ic_pause.png" />
+            <resource-file src="res/drawable-hdpi/ic_play.png" target="res/drawable-hdpi/ic_play.png" />
+            <resource-file src="res/layout/activity_custom_player.xml" target="res/layout/activity_custom_player.xml" />
+
             <lib-file src="platforms/android/libs/openyoutubeactivity.jar"/>
             <lib-file src="platforms/android/libs/YouTubeAndroidPlayerApi.jar"/>
 
